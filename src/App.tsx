@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Navigation from "./components/Navigation";
+import React from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Artists } from "./pages/Artists";
+import { ArtistDetails } from "./pages/ArtistDetails";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { Favorites } from "./pages/Favorites";
+import * as route from './services/routes'
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <BrowserRouter>
+        <>
+          <Navigation />
+          <main style={{ padding: "30px" }}>
+            <Routes>
+              <Route path={route.artists} element={<Artists />} />
+              <Route path={`${route.artristDetail}/:id`} element={<ArtistDetails />} />
+              <Route path={route.favorites} element={<Favorites />} />
+              <Route
+                path="*"
+                element={<Navigate to={route.artists} replace />}
+              />
+            </Routes>
+          </main>
+        </>
+      </BrowserRouter>
+    </Provider>
+
+  )
 }
 
-export default App;
